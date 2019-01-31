@@ -1,4 +1,5 @@
 ﻿using ImportaExcelSql.Models;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -129,7 +130,31 @@ namespace ImportaExcelSql.Controllers
             {
                 datos = context.TB_IMP_IMPORTADATOS.ToList();
             }
+            ViewBag.Message = "Datos ingresados...";
             return View(datos);
+        }
+
+        public void ExportListUsingEPPlus()
+        {
+            List<TB_IMP_IMPORTADATOS> data = new List<TB_IMP_IMPORTADATOS>();
+            using (var context = new BaseDZEntities())
+            {
+                data = context.TB_IMP_IMPORTADATOS.ToList();
+            }
+
+            ExcelPackage excel = new ExcelPackage();
+            var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
+            workSheet.Cells[1, 1].LoadFromCollection(data, true);
+            using (var memoryStream = new MemoryStream())
+            {
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                //here i have set filname as Students.xlsx
+                Response.AddHeader("content-disposition", "attachment;  filename=Importados.xlsx");
+                excel.SaveAs(memoryStream);
+                memoryStream.WriteTo(Response.OutputStream);
+                Response.Flush();
+                Response.End();
+            }
         }
 
         public ActionResult Contact()
