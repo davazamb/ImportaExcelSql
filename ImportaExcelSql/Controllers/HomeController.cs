@@ -125,22 +125,65 @@ namespace ImportaExcelSql.Controllers
 
         public ActionResult About()
         {
-            List<TB_IMP_IMPORTADATOS> datos = new List<TB_IMP_IMPORTADATOS>();
+            //List<TB_IMP_IMPORTADATOS> datos = new List<TB_IMP_IMPORTADATOS>();
+            //using (var context = new BaseDZEntities())
+            //{
+            //    datos = context.TB_IMP_IMPORTADATOS.ToList();
+            //}
+            ViewBag.Message = "Datos ingresados...";
+            return View();
+        }
+
+        public ActionResult Reporte(string fechaD, string fechaH)
+        {
+            List<ImportaDatosView> idv = new List<ImportaDatosView>();
             using (var context = new BaseDZEntities())
             {
-                datos = context.TB_IMP_IMPORTADATOS.ToList();
+                var datos = context.TB_IMP_IMPORTADATOS.ToList(); 
+                foreach (var item in datos.Where(x=> Convert.ToDateTime(x.TB_IMP_IMPORTADATOS_FechaIngreso) >= Convert.ToDateTime(fechaD) && Convert.ToDateTime(x.TB_IMP_IMPORTADATOS_FechaIngreso) <= Convert.ToDateTime(fechaH)))
+                {
+                    idv.Add(new ImportaDatosView
+                    {
+                        IdImporta = item.PK_IMP_IMPORTADATOS_ID,
+                        RutFacilitador = item.TB_IMP_IMPORTADATOS_RutFacilitador,
+                        Comuna = item.TB_IMP_IMPORTADATOS_Comuna,
+                        Correo = item.TB_IMP_IMPORTADATOS_Correo,
+                        Estado = item.TB_IMP_IMPORTADATOS_Estado,
+                        FechaAsignación = item.TB_IMP_IMPORTADATOS_FechaAsignación,
+                        FechaEnvio = item.TB_IMP_IMPORTADATOS_FechaEnvio,
+                        FechaEvaluación = item.TB_IMP_IMPORTADATOS_FechaEvaluación,
+                        FechaIngreso = item.TB_IMP_IMPORTADATOS_FechaIngreso,
+                        NombreEvaluador = item.TB_IMP_IMPORTADATOS_NombreEvaluador,
+                        NombreFacilitador = item.TB_IMP_IMPORTADATOS_NombreFacilitador,
+                        NombreModulo = item.TB_IMP_IMPORTADATOS_NombreModulo,
+                        PlanFormativo = item.TB_IMP_IMPORTADATOS_PlanFormativo,
+                        Región = item.TB_IMP_IMPORTADATOS_Región,
+                        SectorModulo = item.TB_IMP_IMPORTADATOS_SectorModulo,
+                        SubSectorModulo = item.TB_IMP_IMPORTADATOS_SubSectorModulo,
+                        Teléfono = item.TB_IMP_IMPORTADATOS_Teléfono,
+                        TipoModulo = item.TB_IMP_IMPORTADATOS_TipoModulo,
+
+                    });
+                }
             }
-            ViewBag.Message = "Datos ingresados...";
-            return View(datos);
+
+
+            Session["ListaImporta"] = idv.ToList();
+            return Json(new { data = idv }, JsonRequestBehavior.AllowGet);
         }
+
+
 
         public void ExportListUsingEPPlus()
         {
-            List<TB_IMP_IMPORTADATOS> data = new List<TB_IMP_IMPORTADATOS>();
-            using (var context = new BaseDZEntities())
-            {
-                data = context.TB_IMP_IMPORTADATOS.ToList();
-            }
+            //List<TB_IMP_IMPORTADATOS> data = new List<TB_IMP_IMPORTADATOS>();
+            List<ImportaDatosView> data = (List<ImportaDatosView>)Session["ListaImporta"];
+
+
+            //using (var context = new BaseDZEntities())
+            //{
+            //    data = context.TB_IMP_IMPORTADATOS.ToList();
+            //}
 
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add("Sheet1");

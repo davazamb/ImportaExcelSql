@@ -2,16 +2,40 @@
 @{
     ViewBag.Title = "Lista de Registros";
 }
+
+
 <h2>@ViewBag.Title.</h2>
 <div class="jumbotron">
     <h3>@ViewBag.Message</h3>
 
     <br />
 
-    @* <a href="/Home/ExportListUsingEPPlus" class="btn btn-primary">Export to excel</a>*@
+    <a href="/Home/ExportListUsingEPPlus" class="btn btn-primary">Exportar a excel</a>
     <br /><br />
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-4 col-sm-3 col-md-2">
+                <div class="form-group">
+                    <label for="fechaDesde">Fecha inicio</label>
+                    <input class="form-control input-sm fecha" id="fechaDesde">
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-3 col-md-2">
+                <div class="form-group">
+                    <label for="fechaHasta">Fecha Término</label>
+                    <input class="form-control input-sm fecha" id="fechaHasta">
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-2 col-md-2">
+                <br>
+                <button type="submit" class="btn btn-primary btn-zul animate" id="btnBuscar"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+            </div>
+        </div>
+    </div>
+ 
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="datosTable">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -34,32 +58,332 @@
                     <th>FechaEnvio</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var dato in Model)
-                {
-                    <tr>
-                        <td>@dato.PK_IMP_IMPORTADATOS_ID</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_RutFacilitador</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_NombreFacilitador</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_FechaIngreso</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_FechaAsignación</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_FechaEvaluación</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_NombreEvaluador</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_SectorModulo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_SubSectorModulo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_TipoModulo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_PlanFormativo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_NombreModulo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_Estado</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_Correo</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_Teléfono</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_Comuna</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_Región</td>
-                        <td>@dato.TB_IMP_IMPORTADATOS_FechaEnvio</td>
-                    </tr>
-                }
-            </tbody>
+            @*<tbody>
+                    @foreach (var dato in Model)
+                    {
+                        <tr>
+                            <td>@dato.PK_IMP_IMPORTADATOS_ID</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_RutFacilitador</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_NombreFacilitador</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_FechaIngreso</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_FechaAsignación</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_FechaEvaluación</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_NombreEvaluador</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_SectorModulo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_SubSectorModulo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_TipoModulo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_PlanFormativo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_NombreModulo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_Estado</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_Correo</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_Teléfono</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_Comuna</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_Región</td>
+                            <td>@dato.TB_IMP_IMPORTADATOS_FechaEnvio</td>
+                        </tr>
+                    }
+                </tbody>*@
         </table>
     </div>
 
 </div>
+
+@section scripts{
+    @*<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />*@
+    <!-- #region datatables files -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.3.2/css/autoFill.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.4/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/colreorder/1.5.0/css/colReorder.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedcolumns/3.2.5/css/fixedColumns.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.4/css/fixedHeader.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/keytable/2.5.0/css/keyTable.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.2/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowgroup/1.1.0/css/rowGroup.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.4/css/rowReorder.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/scroller/1.5.0/css/scroller.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.6/css/select.dataTables.min.css" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/autofill/2.3.2/js/dataTables.autoFill.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/colreorder/1.5.0/js/dataTables.colReorder.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.5/js/dataTables.fixedColumns.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.4/js/dataTables.fixedHeader.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/keytable/2.5.0/js/dataTables.keyTable.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.2/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.0/js/dataTables.rowGroup.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/rowreorder/1.2.4/js/dataTables.rowReorder.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/scroller/1.5.0/js/dataTables.scroller.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
+
+
+    <!-- #endregion -->
+    <script>
+
+    $(document).ready(function () {
+        $('#datosTable').DataTable({
+            "bProcessing": true,
+            "bServerSide": true,
+            "paging": true,
+            "scrollX": true,
+            "scrollY": "300px",
+            lengthChange: false,
+            serverSide: false,
+            lengthChange: false,
+            destroy: true,
+            columns: [
+
+                {
+                    data: "IdImporta", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.IdImporta == null) {
+                            return ("0");
+                        }
+                        return row.IdImporta;
+                    }
+                },
+                {
+                    data: "RutFacilitador", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.RutFacilitador == null) {
+                            return ("0");
+                        }
+                        return row.RutFacilitador;
+                    }
+                 },
+                {
+                    data: "NombreFacilitador", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.NombreFacilitador == null) {
+                            return ("0");
+                        }
+                        return row.NombreFacilitador;
+                    }
+                 },
+                {
+                    data: "FechaIngreso", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.FechaIngreso == null) {
+                            return ("0");
+                        }
+                        return row.FechaIngreso;
+                    }
+                 },
+                {
+                    data: "FechaAsignación", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.FechaAsignación == null) {
+                            return ("0");
+                        }
+                        return row.FechaAsignación;
+                    }
+                 },
+                {
+                    data: "FechaEvaluación", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.FechaEvaluación == null) {
+                            return ("0");
+                        }
+                        return row.FechaEvaluación;
+                    }
+                 },
+                {
+                    data: "NombreEvaluador", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.NombreEvaluador == null) {
+                            return ("0");
+                        }
+                        return row.NombreEvaluador;
+                    }
+                 },
+                {
+                    data: "SectorModulo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.SectorModulo == null) {
+                            return ("0");
+                        }
+                        return row.SectorModulo;
+                    }
+                 },
+                {
+                    data: "SubSectorModulo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.SubSectorModulo == null) {
+                            return ("0");
+                        }
+                        return row.SubSectorModulo;
+                    }
+                 },
+                {
+                    data: "TipoModulo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.TipoModulo == null) {
+                            return ("0");
+                        }
+                        return row.TipoModulo;
+                    }
+                 },
+                {
+                    data: "PlanFormativo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.PlanFormativo == null) {
+                            return ("0");
+                        }
+                        return row.PlanFormativo;
+                    }
+                 },
+                {
+                    data: "NombreModulo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.NombreModulo == null) {
+                            return ("0");
+                        }
+                        return row.NombreModulo;
+                    }
+                 },
+                {
+                    data: "Estado", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.Estado == null) {
+                            return ("0");
+                        }
+                        return row.Estado;
+                    }
+                 },
+                {
+                    data: "Correo", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.Correo == null) {
+                            return ("0");
+                        }
+                        return row.Correo;
+                    }
+                 },
+                {
+                    data: "Teléfono", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.Teléfono == null) {
+                            return ("0");
+                        }
+                        return row.Teléfono;
+                    }
+                 },
+                {
+                    data: "Comuna", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.Comuna == null) {
+                            return ("0");
+                        }
+                        return row.Comuna;
+                    }
+                 },
+                {
+                    data: "Región", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.Región == null) {
+                            return ("0");
+                        }
+                        return row.Región;
+                    }
+                 },
+                {
+                    data: "FechaEnvio", "autoWidth": true,
+                    render: function (data, type, row) {
+                        if (row.FechaEnvio == null) {
+                            return ("0");
+                        }
+                        return row.FechaEnvio;
+                    }
+                 },
+
+            ],
+            ajax: {
+                //url = '@Url.Action("Reporte", "Home")',
+                data: function (d) {
+                    d.fechaD = $("#fechaDesde").val();
+                    d.fechaH = $("#fechaHasta").val();
+                },
+                complete: function (settings, textStatus) {
+                    //OcultaEspera($("#tablaDiv"));
+                },
+            },
+            "sAjaxSource": "/Home/Reporte" //url
+        });
+    });
+
+    @*var TablaD;
+        $("#btnBuscar").click(function (e, data) {
+            Llenatabla();
+        });
+
+        function Llenatabla() {
+            url = '@Url.Action("Reporte", "Home")';
+            $('#datosTable').DataTable({
+                bFilter: false,
+                lengthChange: false,
+                serverSide: false,
+                lengthChange: false,
+                destroy: true,
+                type: "Get",
+                dataType: "json",
+                select: {
+                    style: "none",
+                    selector: 'td:not(.col-accion)'
+                },
+                "language": {
+                    "url": "@Url.Content("~/Scripts/DataTables/spanish.json")"
+                },
+                columns: [
+
+                    { data: "IdImporta", "autoWidth": true },
+                    { data: "RutFacilitador", "autoWidth": true },
+                    { data: "NombreFacilitador", "autoWidth": true },
+                    { data: "FechaIngreso", "autoWidth": true },
+                    { data: "FechaAsignación", "autoWidth": true },
+                    { data: "FechaEvaluación", "autoWidth": true },
+                    { data: "NombreEvaluador", "autoWidth": true },
+                    { data: "SectorModulo", "autoWidth": true },
+                    { data: "SubSectorModulo", "autoWidth": true },
+                    { data: "TipoModulo", "autoWidth": true },
+                    { data: "PlanFormativo", "autoWidth": true },
+                    { data: "NombreModulo", "autoWidth": true },
+                    { data: "Estado", "autoWidth": true },
+                    { data: "Correo", "autoWidth": true },
+                    { data: "Teléfono", "autoWidth": true },
+                    { data: "Comuna", "autoWidth": true },
+                    { data: "Región", "autoWidth": true },
+                    { data: "FechaEnvio", "autoWidth": true },
+
+
+                ],
+                "order": [[2, "desc"]],
+                ajax: {
+                    url: url,
+                    data: function (d) {
+                        d.param = 1;
+                        //d.fechaHasta = $("#fechaHasta").val();
+                    },
+                    complete: function (settings, textStatus) {
+                        //OcultaEspera($("#tablaDiv"));
+                    },
+                }
+            });
+        }*@
+
+
+
+
+    </script>
+}
