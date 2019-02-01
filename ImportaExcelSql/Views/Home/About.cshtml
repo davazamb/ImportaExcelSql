@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
- 
+
     <div class="table-responsive">
         <table class="table table-bordered" id="datosTable">
             <thead>
@@ -127,15 +127,32 @@
     <script type="text/javascript" src="https://cdn.datatables.net/rowreorder/1.2.4/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/scroller/1.5.0/js/dataTables.scroller.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
-
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
+  @*  <script src="~/Scripts/moment-with-locales.js"></script>*@
 
     <!-- #endregion -->
     <script>
+        var TablaR;
+        $(document).ready(function () {
+            $(".fecha").datepicker({
+                format: "yyyy/mm/dd",
+                language: "es",
+                autoclose: true,
+                todayHighlight: true
+            }).on("changeDate", function (ev) {
+                //
+            });
 
-    $(document).ready(function () {
-        $('#datosTable').DataTable({
+            $("#fechaDesde").datepicker(
+                "setDate", "now");
+            $("#fechaHasta").datepicker(
+                "setDate", "now");
+
+        //url: "/Home/Reporte",
+        TablaR = $('#datosTable').DataTable({
             "bProcessing": true,
-            "bServerSide": true,
+            "ServerSide": false,
             "paging": true,
             "scrollX": true,
             "scrollY": "300px",
@@ -143,6 +160,8 @@
             serverSide: false,
             lengthChange: false,
             destroy: true,
+            type: "GET",
+            dataType: "json",
             columns: [
 
                 {
@@ -309,80 +328,24 @@
                  },
 
             ],
+
             ajax: {
-                //url = '@Url.Action("Reporte", "Home")',
+                url: "/Home/Reporte",
                 data: function (d) {
-                    d.fechaD = $("#fechaDesde").val();
-                    d.fechaH = $("#fechaHasta").val();
+                    d.fechaDesde = $("#fechaDesde").val();
+                    d.fechaHasta = $("#fechaHasta").val();
                 },
                 complete: function (settings, textStatus) {
                     //OcultaEspera($("#tablaDiv"));
                 },
             },
-            "sAjaxSource": "/Home/Reporte" //url
+            //"sAjaxSource": "/Home/Reporte" //url
         });
     });
-
-    @*var TablaD;
         $("#btnBuscar").click(function (e, data) {
-            Llenatabla();
+            TablaR.ajax.reload();
         });
-
-        function Llenatabla() {
-            url = '@Url.Action("Reporte", "Home")';
-            $('#datosTable').DataTable({
-                bFilter: false,
-                lengthChange: false,
-                serverSide: false,
-                lengthChange: false,
-                destroy: true,
-                type: "Get",
-                dataType: "json",
-                select: {
-                    style: "none",
-                    selector: 'td:not(.col-accion)'
-                },
-                "language": {
-                    "url": "@Url.Content("~/Scripts/DataTables/spanish.json")"
-                },
-                columns: [
-
-                    { data: "IdImporta", "autoWidth": true },
-                    { data: "RutFacilitador", "autoWidth": true },
-                    { data: "NombreFacilitador", "autoWidth": true },
-                    { data: "FechaIngreso", "autoWidth": true },
-                    { data: "FechaAsignación", "autoWidth": true },
-                    { data: "FechaEvaluación", "autoWidth": true },
-                    { data: "NombreEvaluador", "autoWidth": true },
-                    { data: "SectorModulo", "autoWidth": true },
-                    { data: "SubSectorModulo", "autoWidth": true },
-                    { data: "TipoModulo", "autoWidth": true },
-                    { data: "PlanFormativo", "autoWidth": true },
-                    { data: "NombreModulo", "autoWidth": true },
-                    { data: "Estado", "autoWidth": true },
-                    { data: "Correo", "autoWidth": true },
-                    { data: "Teléfono", "autoWidth": true },
-                    { data: "Comuna", "autoWidth": true },
-                    { data: "Región", "autoWidth": true },
-                    { data: "FechaEnvio", "autoWidth": true },
-
-
-                ],
-                "order": [[2, "desc"]],
-                ajax: {
-                    url: url,
-                    data: function (d) {
-                        d.param = 1;
-                        //d.fechaHasta = $("#fechaHasta").val();
-                    },
-                    complete: function (settings, textStatus) {
-                        //OcultaEspera($("#tablaDiv"));
-                    },
-                }
-            });
-        }*@
-
-
+   
 
 
     </script>

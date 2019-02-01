@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BaseDZModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BaseDZModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TB_IMP_IMPORTADATOS">
           <Key>
             <PropertyRef Name="PK_IMP_IMPORTADATOS_ID" />
@@ -12,7 +12,7 @@
           <Property Name="PK_IMP_IMPORTADATOS_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TB_IMP_IMPORTADATOS_RutFacilitador" Type="varchar(max)" />
           <Property Name="TB_IMP_IMPORTADATOS_NombreFacilitador" Type="varchar(max)" />
-          <Property Name="TB_IMP_IMPORTADATOS_FechaIngreso" Type="varchar(max)" />
+          <Property Name="TB_IMP_IMPORTADATOS_FechaIngreso" Type="datetime" />
           <Property Name="TB_IMP_IMPORTADATOS_FechaAsignación" Type="varchar(max)" />
           <Property Name="TB_IMP_IMPORTADATOS_FechaEvaluación" Type="varchar(max)" />
           <Property Name="TB_IMP_IMPORTADATOS_NombreEvaluador" Type="varchar(max)" />
@@ -31,11 +31,13 @@
         <EntityContainer Name="BaseDZModelStoreContainer">
           <EntitySet Name="TB_IMP_IMPORTADATOS" EntityType="Self.TB_IMP_IMPORTADATOS" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BaseDZModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BaseDZEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_IMP_IMPORTADATOS" EntityType="BaseDZModel.TB_IMP_IMPORTADATOS" />
+        </EntityContainer>
         <EntityType Name="TB_IMP_IMPORTADATOS">
           <Key>
             <PropertyRef Name="PK_IMP_IMPORTADATOS_ID" />
@@ -43,7 +45,7 @@
           <Property Name="PK_IMP_IMPORTADATOS_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TB_IMP_IMPORTADATOS_RutFacilitador" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TB_IMP_IMPORTADATOS_NombreFacilitador" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TB_IMP_IMPORTADATOS_FechaIngreso" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TB_IMP_IMPORTADATOS_FechaIngreso" Type="DateTime" Precision="3" />
           <Property Name="TB_IMP_IMPORTADATOS_FechaAsignación" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TB_IMP_IMPORTADATOS_FechaEvaluación" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TB_IMP_IMPORTADATOS_NombreEvaluador" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -59,9 +61,6 @@
           <Property Name="TB_IMP_IMPORTADATOS_Región" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TB_IMP_IMPORTADATOS_FechaEnvio" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="BaseDZEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="TB_IMP_IMPORTADATOS" EntityType="Self.TB_IMP_IMPORTADATOS" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -71,24 +70,24 @@
           <EntitySetMapping Name="TB_IMP_IMPORTADATOS">
             <EntityTypeMapping TypeName="BaseDZModel.TB_IMP_IMPORTADATOS">
               <MappingFragment StoreEntitySet="TB_IMP_IMPORTADATOS">
-                <ScalarProperty Name="PK_IMP_IMPORTADATOS_ID" ColumnName="PK_IMP_IMPORTADATOS_ID" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_RutFacilitador" ColumnName="TB_IMP_IMPORTADATOS_RutFacilitador" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreFacilitador" ColumnName="TB_IMP_IMPORTADATOS_NombreFacilitador" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaIngreso" ColumnName="TB_IMP_IMPORTADATOS_FechaIngreso" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaAsignación" ColumnName="TB_IMP_IMPORTADATOS_FechaAsignación" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaEvaluación" ColumnName="TB_IMP_IMPORTADATOS_FechaEvaluación" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreEvaluador" ColumnName="TB_IMP_IMPORTADATOS_NombreEvaluador" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_SectorModulo" ColumnName="TB_IMP_IMPORTADATOS_SectorModulo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_SubSectorModulo" ColumnName="TB_IMP_IMPORTADATOS_SubSectorModulo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_TipoModulo" ColumnName="TB_IMP_IMPORTADATOS_TipoModulo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_PlanFormativo" ColumnName="TB_IMP_IMPORTADATOS_PlanFormativo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreModulo" ColumnName="TB_IMP_IMPORTADATOS_NombreModulo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Estado" ColumnName="TB_IMP_IMPORTADATOS_Estado" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Correo" ColumnName="TB_IMP_IMPORTADATOS_Correo" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Teléfono" ColumnName="TB_IMP_IMPORTADATOS_Teléfono" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Comuna" ColumnName="TB_IMP_IMPORTADATOS_Comuna" />
-                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Región" ColumnName="TB_IMP_IMPORTADATOS_Región" />
                 <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaEnvio" ColumnName="TB_IMP_IMPORTADATOS_FechaEnvio" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Región" ColumnName="TB_IMP_IMPORTADATOS_Región" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Comuna" ColumnName="TB_IMP_IMPORTADATOS_Comuna" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Teléfono" ColumnName="TB_IMP_IMPORTADATOS_Teléfono" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Correo" ColumnName="TB_IMP_IMPORTADATOS_Correo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_Estado" ColumnName="TB_IMP_IMPORTADATOS_Estado" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreModulo" ColumnName="TB_IMP_IMPORTADATOS_NombreModulo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_PlanFormativo" ColumnName="TB_IMP_IMPORTADATOS_PlanFormativo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_TipoModulo" ColumnName="TB_IMP_IMPORTADATOS_TipoModulo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_SubSectorModulo" ColumnName="TB_IMP_IMPORTADATOS_SubSectorModulo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_SectorModulo" ColumnName="TB_IMP_IMPORTADATOS_SectorModulo" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreEvaluador" ColumnName="TB_IMP_IMPORTADATOS_NombreEvaluador" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaEvaluación" ColumnName="TB_IMP_IMPORTADATOS_FechaEvaluación" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaAsignación" ColumnName="TB_IMP_IMPORTADATOS_FechaAsignación" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_FechaIngreso" ColumnName="TB_IMP_IMPORTADATOS_FechaIngreso" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_NombreFacilitador" ColumnName="TB_IMP_IMPORTADATOS_NombreFacilitador" />
+                <ScalarProperty Name="TB_IMP_IMPORTADATOS_RutFacilitador" ColumnName="TB_IMP_IMPORTADATOS_RutFacilitador" />
+                <ScalarProperty Name="PK_IMP_IMPORTADATOS_ID" ColumnName="PK_IMP_IMPORTADATOS_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

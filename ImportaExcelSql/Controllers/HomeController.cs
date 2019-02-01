@@ -134,45 +134,53 @@ namespace ImportaExcelSql.Controllers
             return View();
         }
 
-        public ActionResult Reporte(string fechaD, string fechaH)
+        public ActionResult Reporte(string fechaDesde, string fechaHasta)
         {
-            List<ImportaDatosView> idv = new List<ImportaDatosView>();
-            using (var context = new BaseDZEntities())
-            {
-                var datos = context.TB_IMP_IMPORTADATOS.ToList(); 
-                foreach (var item in datos.Where(x=> Convert.ToDateTime(x.TB_IMP_IMPORTADATOS_FechaIngreso) >= Convert.ToDateTime(fechaD) && Convert.ToDateTime(x.TB_IMP_IMPORTADATOS_FechaIngreso) <= Convert.ToDateTime(fechaH)))
-                {
-                    idv.Add(new ImportaDatosView
-                    {
-                        IdImporta = item.PK_IMP_IMPORTADATOS_ID,
-                        RutFacilitador = item.TB_IMP_IMPORTADATOS_RutFacilitador,
-                        Comuna = item.TB_IMP_IMPORTADATOS_Comuna,
-                        Correo = item.TB_IMP_IMPORTADATOS_Correo,
-                        Estado = item.TB_IMP_IMPORTADATOS_Estado,
-                        FechaAsignación = item.TB_IMP_IMPORTADATOS_FechaAsignación,
-                        FechaEnvio = item.TB_IMP_IMPORTADATOS_FechaEnvio,
-                        FechaEvaluación = item.TB_IMP_IMPORTADATOS_FechaEvaluación,
-                        FechaIngreso = item.TB_IMP_IMPORTADATOS_FechaIngreso,
-                        NombreEvaluador = item.TB_IMP_IMPORTADATOS_NombreEvaluador,
-                        NombreFacilitador = item.TB_IMP_IMPORTADATOS_NombreFacilitador,
-                        NombreModulo = item.TB_IMP_IMPORTADATOS_NombreModulo,
-                        PlanFormativo = item.TB_IMP_IMPORTADATOS_PlanFormativo,
-                        Región = item.TB_IMP_IMPORTADATOS_Región,
-                        SectorModulo = item.TB_IMP_IMPORTADATOS_SectorModulo,
-                        SubSectorModulo = item.TB_IMP_IMPORTADATOS_SubSectorModulo,
-                        Teléfono = item.TB_IMP_IMPORTADATOS_Teléfono,
-                        TipoModulo = item.TB_IMP_IMPORTADATOS_TipoModulo,
+            DateTime? fd = Convert.ToDateTime(fechaDesde);
+            DateTime? fh = Convert.ToDateTime(fechaHasta);
 
-                    });
+            List<ImportaDatosView> idv = new List<ImportaDatosView>();
+            try
+            {
+                using (var context = new BaseDZEntities())
+                {
+
+                    var lst = context.TB_IMP_IMPORTADATOS.Where(x => x.TB_IMP_IMPORTADATOS_FechaIngreso >= fd &&
+                    x.TB_IMP_IMPORTADATOS_FechaIngreso <= fh).ToList();
+
+                    foreach (var item in lst)
+                    {
+                        idv.Add(new ImportaDatosView
+                        {
+                            IdImporta = item.PK_IMP_IMPORTADATOS_ID,
+                            RutFacilitador = item.TB_IMP_IMPORTADATOS_RutFacilitador,
+                            Comuna = item.TB_IMP_IMPORTADATOS_Comuna,
+                            Correo = item.TB_IMP_IMPORTADATOS_Correo,
+                            Estado = item.TB_IMP_IMPORTADATOS_Estado,
+                            FechaAsignación = item.TB_IMP_IMPORTADATOS_FechaAsignación,
+                            FechaEnvio = item.TB_IMP_IMPORTADATOS_FechaEnvio,
+                            FechaEvaluación = item.TB_IMP_IMPORTADATOS_FechaEvaluación,
+                            FechaIngreso = item.TB_IMP_IMPORTADATOS_FechaIngreso.ToString(),
+                            NombreEvaluador = item.TB_IMP_IMPORTADATOS_NombreEvaluador,
+                            NombreFacilitador = item.TB_IMP_IMPORTADATOS_NombreFacilitador,
+                            NombreModulo = item.TB_IMP_IMPORTADATOS_NombreModulo,
+                            PlanFormativo = item.TB_IMP_IMPORTADATOS_PlanFormativo,
+                            Región = item.TB_IMP_IMPORTADATOS_Región,
+                            SectorModulo = item.TB_IMP_IMPORTADATOS_SectorModulo,
+                            SubSectorModulo = item.TB_IMP_IMPORTADATOS_SubSectorModulo,
+                            Teléfono = item.TB_IMP_IMPORTADATOS_Teléfono,
+                            TipoModulo = item.TB_IMP_IMPORTADATOS_TipoModulo,
+                        });
+                    }
                 }
             }
-
-
+            catch (Exception ex)
+            {
+                ex.Message.ToString();                
+            }
             Session["ListaImporta"] = idv.ToList();
             return Json(new { data = idv }, JsonRequestBehavior.AllowGet);
         }
-
-
 
         public void ExportListUsingEPPlus()
         {

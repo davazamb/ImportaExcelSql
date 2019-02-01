@@ -17,7 +17,7 @@ namespace ImportaExcelSql.Models
         public int PK_IMP_IMPORTADATOS_ID { get; set; }
         public string TB_IMP_IMPORTADATOS_RutFacilitador { get; set; }
         public string TB_IMP_IMPORTADATOS_NombreFacilitador { get; set; }
-        public string TB_IMP_IMPORTADATOS_FechaIngreso { get; set; }
+        public Nullable<System.DateTime> TB_IMP_IMPORTADATOS_FechaIngreso { get; set; }
         public string TB_IMP_IMPORTADATOS_FechaAsignación { get; set; }
         public string TB_IMP_IMPORTADATOS_FechaEvaluación { get; set; }
         public string TB_IMP_IMPORTADATOS_NombreEvaluador { get; set; }
